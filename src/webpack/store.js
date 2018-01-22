@@ -48,7 +48,7 @@ export default new Vuex.Store({
       return Math.ceil(getters.totalPower / 10) / 10;
     },
     dispGold(state) {
-      return Math.floor(state.gold);
+      return Math.floor(state.gold).toLocaleString();
     },
   },
   actions: {
