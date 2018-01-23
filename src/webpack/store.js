@@ -74,6 +74,11 @@ export default new Vuex.Store({
       const stage = state.stages[index];
       stage.complete(context);
     },
+    sortCharacters(context, sortTarget) {
+      const { state } = context;
+      state.characters = _.sortBy(state.characters, [sortTarget]);
+      state.characters = _.reverse(state.characters);
+    },
   },
   mutations: {
     init(state) {

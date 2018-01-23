@@ -4,6 +4,19 @@
       <v-flex xs6>
         <p>Gold: {{ $store.getters.dispGold }}G ({{ $store.getters.income }}G/秒)</p>
         <p>総戦力：{{ $store.getters.totalPower }}</p>
+
+        <v-menu offset-y>
+          <v-btn color="primary" dark slot="activator">ソート</v-btn>
+          <v-list>
+            <v-list-tile
+              v-for="sortOption in sortOptions"
+              @click="$store.dispatch('sortCharacters', sortOption.value)"
+            >
+              <v-list-tile-title>{{ sortOption.text }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+
         <div class="Characters">
           <div v-for="character in $store.state.characters" class="Characters__item">
             <div class="Character">
