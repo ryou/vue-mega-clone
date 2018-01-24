@@ -33,9 +33,9 @@ export default new Vuex.Store({
     gold: 0,
   },
   getters: {
-    totalPower(state) {
+    totalPower(state, getters) {
       let out = 0;
-      state.characters.forEach((character) => {
+      getters.activeCharacters.forEach((character) => {
         out += character.power;
       });
 
@@ -50,24 +50,30 @@ export default new Vuex.Store({
     dispGold(state) {
       return Math.floor(state.gold).toLocaleString();
     },
+    activeCharacters(state) {
+      return state.characters.filter(character => character.isActive);
+    },
   },
   actions: {
     mainLoop(context) {
       const { state, getters } = context;
       const selectedStage = state.stages[state.selectedStageIndex];
-      const characterNum = state.characters.length;
-      const personalExp = Math.floor(selectedStage.exp / characterNum);
 
-      const restExp = selectedStage.exp - (personalExp * characterNum);
-      state.characters.forEach((character, index) => {
-        let addExp = personalExp;
-        if (index < restExp) addExp += 1;
-        character.addExp(addExp);
-      });
+      if (getters.totalPower >= selectedStage.enemyPower) {
+        selectedStage.addProgress();
 
-      selectedStage.addProgress();
+        const characterNum = getters.activeCharacters.length;
+        const personalExp = Math.floor(selectedStage.exp / characterNum);
 
-      state.gold += getters.income;
+        const restExp = selectedStage.exp - (personalExp * characterNum);
+        getters.activeCharacters.forEach((character, index) => {
+          let addExp = personalExp;
+          if (index < restExp) addExp += 1;
+          character.addExp(addExp);
+        });
+
+        state.gold += getters.income;
+      }
     },
     stageComplete(context, index) {
       const { state } = context;

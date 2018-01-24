@@ -13,7 +13,7 @@ export default [
   {
     id: 'first',
     name: 'はじまり',
-    enemyPower: 0,
+    enemyPower: 1,
     exp: 1,
     capacity: -1,
     maxProgress: 10,

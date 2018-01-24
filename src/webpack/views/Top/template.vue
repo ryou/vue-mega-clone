@@ -33,6 +33,9 @@
                 {{ character.exp }}
                 ({{ character.next }})
               </div>
+              <div class="Character__activate">
+                <v-switch label="アクティブ" v-model="character.isActive"></v-switch>
+              </div>
               <div v-if="character.canClassChange">
                 <v-btn @click="character.classUp()">ClassChange</v-btn>
               </div>
