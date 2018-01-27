@@ -3,6 +3,7 @@ import _ from 'lodash';
 export default class {
   constructor(data) {
     this.id = data.id;
+    this.name = data.name;
     this.cost = data.cost;
     this.contents = data.contents;
     this.isAvailable = false;

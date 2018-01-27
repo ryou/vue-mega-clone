@@ -1,6 +1,7 @@
 export default [
   {
     id: 'first',
+    name: 'ノーマルガチャ',
     cost: 40,
     contents: [
       {
@@ -27,6 +28,7 @@ export default [
   },
   {
     id: 'second',
+    name: 'レアガチャ',
     cost: 1000,
     contents: [
       {
@@ -49,6 +51,7 @@ export default [
   },
   {
     id: 'third',
+    name: 'スペシャルガチャ',
     cost: 10000,
     contents: [
       {
