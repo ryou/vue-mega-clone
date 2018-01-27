@@ -1,4 +1,7 @@
+import env from '../../../.env';
 import LoopController from '../libs/LoopController';
+
+const fps = env.game.fps || 1;
 
 export default {
   data() {
@@ -9,11 +12,11 @@ export default {
   methods: {
   },
   created() {
-    this.$store.commit('init');
+    this.$store.dispatch('init');
 
     const loopController = new LoopController(() => {
       this.$store.dispatch('mainLoop');
-    }, 1);
+    }, fps);
     loopController.start();
   },
 };

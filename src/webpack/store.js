@@ -21,6 +21,8 @@ import Character from './classes/Character';
 import CharacterMaster from './data/characters';
 import Stage from './classes/Stage';
 import StageMaster from './data/stages';
+import Gacha from './classes/Gacha';
+import GachaMaster from './data/gachas';
 
 Vue.use(Vuex);
 
@@ -29,6 +31,7 @@ export default new Vuex.Store({
     currentView: TopView,
     characters: [],
     stages: [],
+    gachas: [],
     selectedStageIndex: 0,
     gold: 0,
   },
@@ -44,6 +47,9 @@ export default new Vuex.Store({
     availableStages(state) {
       return state.stages.filter(stage => stage.isAvailable);
     },
+    availableGachas(state) {
+      return state.gachas.filter(gacha => gacha.isAvailable);
+    },
     income(state, getters) {
       return Math.ceil(getters.totalPower / 10) / 10;
     },
@@ -55,6 +61,20 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    init(context) {
+      const { state, commit } = context;
+      StageMaster.forEach((stage) => {
+        state.stages.push(new Stage(stage.id));
+      });
+
+      state.gold = 40;
+
+      GachaMaster.forEach((gacha) => {
+        state.gachas.push(new Gacha(gacha));
+      });
+
+      commit('gacha', 'first');
+    },
     mainLoop(context) {
       const { state, getters } = context;
       const selectedStage = state.stages[state.selectedStageIndex];
@@ -80,20 +100,13 @@ export default new Vuex.Store({
       const stage = state.stages[index];
       stage.complete(context);
     },
-    sortCharacters(context, sortTarget) {
+    sortCharacters(context, { value, isDesc }) {
       const { state } = context;
-      state.characters = _.sortBy(state.characters, [sortTarget]);
-      state.characters = _.reverse(state.characters);
+      state.characters = _.sortBy(state.characters, [value]);
+      if (isDesc) state.characters = _.reverse(state.characters);
     },
   },
   mutations: {
-    init(state) {
-      StageMaster.forEach((stage) => {
-        state.stages.push(new Stage(stage.id));
-      });
-
-      state.gold = 40;
-    },
     addCharacterRandom(state) {
       if (state.gold < 40) return;
       state.gold -= 40;
@@ -110,6 +123,19 @@ export default new Vuex.Store({
       const stage = state.stages.find(val => val.stageId === id);
       if (stage === undefined) throw new Error('cannot find stage');
       stage.open();
+    },
+    openGacha(state, id) {
+      const gacha = state.gachas.find(val => val.id === id);
+      if (gacha === undefined) throw new Error('cannot find gacha');
+      gacha.isAvailable = true;
+    },
+    gacha(state, id) {
+      const targetGacha = state.gachas.find(gacha => gacha.id === id);
+      if (state.gold >= targetGacha.cost) {
+        state.gold -= targetGacha.cost;
+        const newCharacter = new Character(targetGacha.gacha());
+        state.characters.push(newCharacter);
+      }
     },
   },
 });

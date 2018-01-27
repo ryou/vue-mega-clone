@@ -22,6 +22,7 @@ export default [
     isCompleted: false,
     onComplete({ commit }) {
       commit('openStage', 'second');
+      commit('openGacha', 'first');
     },
   },
   {
@@ -34,6 +35,7 @@ export default [
     dropItems: [],
     onComplete({ commit }) {
       commit('openStage', 'third');
+      commit('openGacha', 'second');
     },
   },
   {
@@ -46,6 +48,7 @@ export default [
     dropItems: [],
     onComplete({ commit }) {
       commit('openStage', 'forth');
+      commit('openGacha', 'third');
     },
   },
   {

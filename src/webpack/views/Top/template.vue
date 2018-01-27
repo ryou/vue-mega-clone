@@ -10,7 +10,7 @@
           <v-list>
             <v-list-tile
               v-for="sortOption in sortOptions"
-              @click="$store.dispatch('sortCharacters', sortOption.value)"
+              @click="$store.dispatch('sortCharacters', sortOption)"
             >
               <v-list-tile-title>{{ sortOption.text }}</v-list-tile-title>
             </v-list-tile>
@@ -26,24 +26,29 @@
                   class="grey lighten-3"
                 ><img :src="`./assets/images/characters/${character.imgUrl}`"></v-avatar>
               </div>
-              <div class="Character__name">{{ character.name }}</div>
-              <div class="Character__lv">{{ character.lv }}</div>
-              <div class="Character__power">{{ character.power }}</div>
-              <div class="Character__exp">
-                {{ character.exp }}
-                ({{ character.next }})
-              </div>
-              <div class="Character__activate">
-                <v-switch label="アクティブ" v-model="character.isActive"></v-switch>
-              </div>
-              <div v-if="character.canClassChange">
-                <v-btn @click="character.classUp()">ClassChange</v-btn>
+              <div class="Character__info">
+                <div class="Character__name">{{ character.name }}</div>
+                <div class="Character__lv">{{ character.lv }}</div>
+                <div class="Character__power">{{ character.power }}</div>
+                <div class="Character__exp">
+                  {{ character.exp }}
+                  ({{ character.next }})
+                </div>
+                <div class="Character__activate">
+                  <v-switch label="アクティブ" v-model="character.isActive"></v-switch>
+                </div>
+                <div v-if="character.canClassChange">
+                  <v-btn @click="character.classUp()">ClassChange</v-btn>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div>
-          <v-btn @click="$store.commit('addCharacterRandom')">+ Character(40G)</v-btn>
+          <v-btn
+            v-for="gacha in $store.getters.availableGachas"
+            @click="$store.commit('gacha', gacha.id)"
+          >{{ gacha.id }}</v-btn>
         </div>
       </v-flex>
       <v-flex xs6>
@@ -90,6 +95,21 @@
 .Characters__item {
   padding: 10px 0;
   border-bottom: 1px solid #000;
+}
+
+.Character {
+  display: flex;
+}
+.Character__figure {
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: 100px;
+
+  margin-right: 20px;
+}
+.Character__info {
+  flex-grow: 1;
+  flex-shrink: 1;
 }
 
 .Stages__item {
