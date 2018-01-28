@@ -28,6 +28,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    pastSeconds: 0,
     currentView: TopView,
     characters: [],
     stages: [],
@@ -58,6 +59,9 @@ export default new Vuex.Store({
     },
     activeCharacters(state) {
       return state.characters.filter(character => character.isActive);
+    },
+    pastTime(state) {
+      return `${Math.floor(state.pastSeconds / 60)}:${state.pastSeconds % 60}`;
     },
   },
   actions: {
@@ -94,6 +98,8 @@ export default new Vuex.Store({
 
         state.gold += getters.income;
       }
+
+      state.pastSeconds += 1;
     },
     stageComplete(context, index) {
       const { state } = context;

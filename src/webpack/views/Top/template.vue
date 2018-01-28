@@ -6,6 +6,7 @@
           <v-card-text>
             <p>Gold: {{ $store.getters.dispGold }}G ({{ $store.getters.income }}G/秒)</p>
             <p>総戦力：{{ $store.getters.totalPower }}</p>
+            <p>経過時間: {{ $store.getters.pastTime }}</p>
           </v-card-text>
         </v-card>
       </v-flex>
